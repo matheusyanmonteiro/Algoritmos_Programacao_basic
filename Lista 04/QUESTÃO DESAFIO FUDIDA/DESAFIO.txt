@@ -1,0 +1,214 @@
+K vizinhos mais próximos
+
+(Questão adaptada da segunda prova prática de 2017/1, do prof. Teofilo E. de Campos)
+
+Sua tarefa é implementar o classificador de K-vizinhos mais próximos usando apenas as bibliotecas stdio.h e math.h.
+
+Trata-se de um dos classificadores mais simples para aprendizado de máquina ou reconhecimento de padrões.
+
+Como todo classificador desse tipo, ele possui uma fase de treinamento e uma fase de teste. Na fase de treinamento, são dadas amostras para as quais sabemos seus rótulos. No exemplo desta tarefa, cada amostra é um vetor de D dimensões de números Reais que descreve um passageiro do navio Titanic e o rótulo é um número binário que indica se esse passageiro sobreviveu (1) ou não (0).
+
+Já na fase de teste, a ideia é inferir rótulos para novas amostras. Por exemplo, dado um novo vetor que descreve um passageiro, a tarefa é usar o conhecimento prévio para dizer se ele sobreviveu.
+
+No classificador de K vizinhos mais próximos, como o próprio nome diz, a inferência de um vetor de teste é feita baseada no rótulo dos K vetores de treinamento que são mais próximos dele. Ou seja, o seguinte algoritmo é aplicado:
+
+    Leia o valor de K, um número inteiro.
+    Leia o valor de Ntrain, um número inteiro que indica quantas amostras de treinamento serão dadas.
+    Leia o valor de Ntest, um número inteiro que indica quantas amostras de teste serão dadas.
+    Leia todos os vetores de treinamento Xtrain, ou seja, leia uma matriz de Ntrain linhas e D colunas, onde cada linha representa uma amostra.
+    No exemplo desta questão, os dados serão fornecidos seguindo o mesmo formato da questão "Titanic - preparação de dados". Ou seja, é necessário converte-los para números Reais e depois é preciso calcular o vetor de µ de média e o vetor de s de desvios padrões de todas as variáveis. Os dados então devem ser normalizados, ou seja, para cada variável, subtraia a média e divida o resultado pelo desvio padrão.
+    Leia os rótulos Ytrain, de todas as amostras de treinamento, ou seja, leia um vetor que contém Ntrain elementos binários, onde cada linha possui apenas um número que indica o rótulo (1 se a pessoa sobreviveu e 0 caso contrário).
+    Leia todos os vetores de teste Xtest, ou seja, leia uma matriz de Ntest linhas e D colunas, onde cada linha representa uma amostra.
+    Da mesma forma que é feita para o conjunto de treinamento, normalize os dados de teste, porém, é importante que ao invés de se calcular a média e o desvio padrão novamente, sejam usados os mesmos vetores µ e s calculados usando o conjunto de treinamento.
+    Crie uma matriz de números reais, W, de Ntest linhas e Ntrain colunas, para armazenar as distâncias entre as amostras de treinamento e teste.
+    Crie uma matriz de inteiros I, também de Ntest linhas e Ntrain colunas, para armazenar os índices de proximidade entre as amostras de treinamento e teste. Para isso, inicialize cada linha desta matriz com os índices das colunas, ou seja, todas as linhas são inicializadas com estes elementos: 0, 1, 2, ..., Ntrain-1
+    Para cada vetor de teste Xitest:
+        Calcule a distância Euclideana entre esse vetor Xitest e todos os vetores de treinamento Xtrain.
+        Armazene os resultados na linha i da matriz W.
+        Relembrando, para um par de vetores: A e B, ambos contendo D elementos, a distância Euclideana é calculada pela seguinte fórmula:
+        d(A,B) = [Sd=1D(Ad - Bd)2]0.5
+        Ordene as distâncias em ordem crescente, ou seja, ordene a linha i da matriz W.
+        Importante: ao ordenar, W, todas as operações feitas em W também devem ser feitas na matriz I.
+        Inicialize contadores de sobreviventes e mortos com 0
+        Para k indo de 0 a K-1
+            Se o k-esimo vizinho mais próximo do vetor Xitest morreu, incremente o contador de mortos
+            caso contrario, incremente o contador de sobreviventes.
+            Para fazer a comparação acima, basta verificar o valor do rótulo associado a este vizinho, ou seja, Y[I[i][k]]
+        Se sobreviventes > mortos, imprima 1
+        Senão, imprima 0.
+
+Portanto, os dados de entrada serão fornecidos desta maneira:
+
+
+K
+Ntrain
+Ntest
+x0,0 x0,1  x0,2 ... x0,D-1 
+x1,0  x1,1  x1,2 ... x1,D-1  
+.
+.
+.
+xNtrain-1,0  xNtrain-1,1  xNtrain,2  ... xNtrain-1,D-1 
+y0
+y1
+y2
+.
+.
+.
+yNtrain
+x0,0 x0,1  x0,2 ... x0,D-1 
+x1,0  x1,1  x1,2 ... x1,D-1  
+.
+.
+.
+xNtest-1,0  xNtest-1,1  xNtest,2  ... xNtest-1,D-1 
+
+Os dados serão do mesmo tipo que os da primeira prova, ou seja, D=6 e as variáveis são as seguintes:
+
+    Classe do passageiro, podendo assumir estes valores: 1, 2 ou 3;
+    Sexo: podendo ser 'm' ou 'f', que devem ser convertidos para o número 0 ou 1, respectivamente;
+    Idade: dada como um número real positivo;
+    Número de irmãos ou parceiros (esposa/o) a bordo: valor inteiro não-negativo;
+    Número de filhos ou parentes a bordo: valor inteiro não-negativo;
+    Porto onde o passageiro embarcou, podendo ser 'S' (Southampton, Inglaterra), 'C' (Cherbourg, França), 'Q' (Queensland, Irlanda), que devem ser convertidos respectivamente para estes valores numéricos: 0, 1, 2.
+
+A saída gerada deve conter Ntest linhas, onde cada linha possui o valor 0 ou 1, indicando se aquela amostra de teste sobreviveu.
+
+Observação: use double para representar todos os números Reais e int para Inteiros.
+
+Exemplo:
+
+Entrada:
+
+
+3
+10
+5
+2 f 32.5 0 0 S
+1 m 54 0 1 S
+3 m 12 1 0 C
+3 m 24 0 0 S
+3 m 19 0 0 Q
+3 m 45 0 0 S
+1 f 19 0 2 S
+3 m 33 0 0 C
+3 m 20 0 0 S
+3 f 47 1 0 S
+1
+0
+0
+1
+0
+0
+0
+1
+1
+0
+2 f 29 1 0 S
+2 m 25 0 0 S
+3 f 32 1 1 Q
+2 m 0.83 1 1 S
+3 m 23 0 0 S
+
+Saída:
+
+
+0
+1
+0
+1
+1 
+
+Para facilitar, o seguinte trecho de código apresenta uma sugestão de solução, com lacunas óbvias. Isso é apenas uma sugestão, você não precisa seguir este exemplo.
+
+
+/* Compile with:
+   gcc solution.c -lm -pedantic -Wall
+ */
+
+#include
+#include
+
+#define COLS 6
+#define VERBOSE 0
+
+/* Function prototypes */	
+void read_data(double data[][COLS], int rows);
+void read_labels(int labels[], int rows);
+void compute_means(double data[][COLS], double means[COLS], int rows);
+void compute_stds(double data[][COLS], double means[COLS], double stds[COLS], int rows);
+void normalise_data(double data[][COLS], double means[COLS], double stds[COLS], int rows);
+double distance(double x1[COLS], double x2[COLS]);  
+int insertion_sort(double vetor[], int idx[], int N);
+  
+
+int main()
+{  
+  int n_train, n_test, r, c, K, n_survived, n_died;
+
+  scanf("%d", &K);
+  scanf("%d", &n_train);
+  scanf("%d", &n_test);
+
+  double Xtrain[n_train][COLS], Xtest[n_test][COLS],
+    dists[n_test][n_train],
+    means[COLS],
+    stds[COLS];
+  int labels[n_train], idxs[n_test][n_train];
+
+  /* Load train and test data */
+  read_data(Xtrain, n_train);
+  read_labels(labels, n_train);
+  read_data(Xtest, n_test);
+
+  /* Compute mean, stantard deviation */ 
+  compute_means(Xtrain, means, n_train);
+  compute_stds(Xtrain, means, stds, n_train);  
+
+  /* Normalising the data: */
+  normalise_data(Xtrain, means, stds, n_train);
+  normalise_data(Xtest, means, stds, n_test);
+  
+  /*************** 
+   * Classifying */
+  for(r=0; r < n_test; r++){
+    /* Compute distance matrix. */
+
+    /* Sort the results. */
+
+    /* Classify the sample and print output. */
+  }  
+
+  return 0;
+}
+
+/*************** 
+ * Function definitions */	
+
+void compute_stds(double data[][COLS], double means[COLS], double stds[COLS], int rows){
+  /* Inicializacao */
+  int r, c;
+  for(c=0; c < COLS; c++) stds[c] = 0.0; 
+
+  /* Soma */  
+  for(r=0; r < rows; r++)
+    for(c=0; c < COLS; c++)
+      stds[c] += (data[r][c] - means[c]) * (data[r][c] - means[c]);
+   
+  /* Divisao e raiz*/
+  if(VERBOSE) printf("STDs = ");
+  for(c=0; c < COLS; c++){
+    stds[c] /= rows;
+    stds[c] = sqrt(stds[c]);
+    if(VERBOSE) printf("%lf ", stds[c]);    
+  }
+  if(VERBOSE) printf("\n");
+}
+		   
+double distance(double x1[COLS], double x2[COLS]){
+  int c=0;
+  double d=0;
+  for(; c < COLS; c++) d += (x1[c]-x2[c]) * (x1[c]-x2[c]);
+  return sqrt(d);
+}
+	       

@@ -1,0 +1,175 @@
+(Questão adaptada da primeira prova prática de 2017/2, turma E - prof. Teófilo de Campos.)
+
+Considere o problema de reconhecimento de padrões baseado nos dados de passageiros do Titanic, extraídos de kaggle.com.
+
+Cada passageiro é descrito por um vetor contendo a 6 variáveis definidas a seguir:
+
+    Classe do passageiro, podendo assumir estes valores: 1, 2 ou 3;
+    Sexo: podendo ser 'm' ou 'f', que devem ser convertidos para o número 0 ou 1, respectivamente;
+    Idade: dada como um número real positivo;
+    Número de irmãos ou parceiros (esposa/o) a bordo: valor inteiro não-negativo;
+    Número de filhos ou pais a bordo: valor inteiro não-negativo;
+    Porto onde o passageiro embarcou, podendo ser 'S' (Southampton, Inglaterra), 'C' (Cherbourg, França), 'Q' (Queensland, Irlanda), que devem ser convertidos respectivamente para estes valores numéricos: 0, 1, 2.
+
+Os dados serão fornecidos ao seu programa no formato abaixo, i.e., há um cabeçalho com dois números seguido pelos dados dos passageiros, com um passageiro por linha:
+
+
+T
+N 
+x1,1  x1,2  x1,3 ... x1,d 
+x2,1  x2,2  x2,3 ... x2,d  
+.
+.
+.
+xN,1  xN,2  xN,3  ... xN,d  
+
+onde:
+
+    T indica a tarefa que seu programa deve executar, podendo ser:
+        0: preparação dos dados;
+        1: classificação de passageiros;
+        2: cálculo da média.
+    N indica o número de amostras, ou seja, quantas linhas a matriz de dados X contém.
+    d = 6, ou seja, os vetores de dados possuem 6 variáveis, i.e., a matriz de dados possui N linhas e 6 colunas.
+
+O seu programa deve, portanto, ler os dados no formato acima executar a tarefa indicada pelo valor de T (o primeiro número fornecido):
+
+    Se T for igual a 0, seu programa deve converter os dados não numéricos para numéricos e imprimir os dados dos passageiros na tela.
+    Ou seja, para cada linha de dados, seu programa deve imprimir uma linha onde as variáveis que originalmente apresentam letras passam a ter números.
+    Formato da saída: N linhas, cada uma com 6 números com uma casa decimal ("%.1f "). Em cada linha, os números são separados por um espaço.
+    Se T for igual a 1, seu programa deve classificar os passageiros, definindo se cada um deles provavelmente morreu ou sobreviveu, de acordo com as seguintes regras:
+        Se esta condição for satisfeita: (idade maior que 15 e menor ou igual a 45) ou (classe maior que 1 e sexo igual a 1), então imprima "Morreu"
+        Caso contrário, imprima "Sobreviveu"
+    Formato da saída: N linhas, cada uma a palavra "Sobreviveu" ou "Morreu".
+    Se T for igual a 2, seu programa deve calcular a média de cada variável (todas em valores numéricos) e imprimir o resultado na tela.
+    Observações:
+        Para manter coerência na correção automática, recomenda-se o uso de float para todos os valores numéricos ao se calcular a média (double não é recomendado).
+        Para reduzir a propagação de erro, lembre-se que é melhor somar todos fatores e divitir o resultado do que dividir todos os fatores e somar os resutados.
+    Formato da saída: uma linha contendo 6 números, todos com 3 casas decimais, separados por espaço, i.e., use "%.3f ".
+
+Motivação:
+Para várias aplicações, é necessário preparar os dados, convertendo informações não numéricas em informações numéricas. Além disso, visando a aplicação de vários algoritmos de aprendizado de máquina (machine learning) é comum preprocessar dados numéricos para normalizá-los. Para tal, o primeiro passo é calcular a média da matriz de dados.
+
+Exemplos:
+
+Entrada:
+
+
+0
+3
+3 m 22 1 0 S
+1 f 38 1 1 C
+3 f 26 0 0 S
+
+Saída:
+
+
+3.0 0.0 22.0 1.0 0.0 0.0
+1.0 1.0 38.0 1.0 1.0 1.0
+3.0 1.0 26.0 0.0 0.0 0.0
+
+Entrada
+
+
+1
+3
+3 m 22 1 0 S
+1 f 38 1 1 C
+3 f 26 0 0 S
+
+Saída:
+
+
+Morreu
+Morreu
+Morreu
+
+Entrada
+
+
+2
+3
+3 m 22 1 0 S
+1 f 38 1 1 C
+2 f 26 0 0 S
+
+Saída:
+
+
+2.000 0.667 28.667 0.667 0.333 0.333
+
+Entrada
+
+
+1
+20
+2 m 35 1 0 S
+2 m 15 0 2 C
+3 m 50 2 0 S
+1 f 11 3 0 S
+3 m 66 0 1 S
+2 m 51 0 0 S
+2 f 45 0 0 S
+3 f 33 0 0 C
+1 f 22 1 3 C
+3 m 14 0 0 C
+2 f 41 5 0 Q
+2 f 4 0 0 S
+1 f 61 1 4 Q
+3 m 0 0 0 S
+3 f 24 1 0 S
+3 f 26 0 1 C
+1 f 68 1 2 C
+3 f 24 0 0 S
+1 m 15 3 0 Q
+2 m 1 0 0 C
+
+Saída:
+
+
+Morreu
+Sobreviveu
+Sobreviveu
+Sobreviveu
+Sobreviveu
+Sobreviveu
+Morreu
+Morreu
+Morreu
+Sobreviveu
+Morreu
+Morreu
+Sobreviveu
+Sobreviveu
+Morreu
+Morreu
+Sobreviveu
+Morreu
+Sobreviveu
+Sobreviveu
+
+Entrada
+
+
+2
+15
+3 m 22.5 1 0 S
+1 f 38 1 0 C
+3 f 26 0 0 S
+1 f 35 1 0 S
+3 m 35 0 0 S
+1 m 54 0 0 S
+3 m 2 3 1 S
+3 f 27 0 2 S
+2 f 14 1 0 C
+3 f 4 1 1 S
+1 f 58 0 0 S
+3 m 20.5 0 0 S
+3 m 39 1 5 S
+3 f 14 0 0 S
+3 f 0.75 2 1 C
+
+Saída:
+
+
+2.400 0.600 25.983 0.733 0.667 0.200
